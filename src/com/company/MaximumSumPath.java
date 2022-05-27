@@ -84,14 +84,13 @@ public class MaximumSumPath {
             }
             l++;
         }
-        return l;
+        return -1; // the level of the given index has not been found in the triangle
     }
 
 
 
     /**
      * return the index range {start, end} for a given level,
-     * the end value is not included, for example, the range for the level 4 is [10, 14]
      * the function is recursive, based on the equation range(l) = {range(l-1)[1], range(l-1)[1] + level + 1}
      * @param level the level we want to get the index range
      * @return a {start, end} range int array
@@ -131,7 +130,5 @@ public class MaximumSumPath {
         }
         return M;
     }
-
-
 
 }

@@ -17,6 +17,7 @@ class MaximumValueBag {
         collector.clear();
         for (int i = 1; i <= number_of_run; i++) {
             collector.add(calculateDistance(true));
+            Util.printProgress(number_of_run, i);
         }
         Util.WriteTabToFile(collector, "SacValMaxByDensity.csv");
     }
@@ -30,7 +31,7 @@ class MaximumValueBag {
      * where v* is the optimal value, and g is the greedy value
      */
     public static float calculateDistance(boolean by_density) {
-        int C = Util.randomNum(500, 10000);
+        int C = Util.randomNum(1, 10000);
         int n = Util.randomNum(1, 5000);
         int[] V  = Util.randomTab(n, 1, 500);
         int[] T = Util.randomTab(n, 1, 100);
@@ -76,12 +77,14 @@ class MaximumValueBag {
         int n = V.length;
         int[][] M = new int[n+1][C+1];
         for (int c = 0; c < C+1; c++) M[0][c] = 0;
-        for (int k = 1; k < n+1; k++)
-            for (int c = 0; c < C+1; c++)
-                if (c-T[k-1] < 0)
-                    M[k][c] = M[k-1][c];
+        for (int k = 1; k < n+1; k++) {
+            for (int c = 0; c < C + 1; c++) {
+                if (c - T[k - 1] < 0)
+                    M[k][c] = M[k - 1][c];
                 else
-                    M[k][c] = Math.max(M[k-1][c], V[k-1]+M[k-1][c-T[k-1]]);
+                    M[k][c] = Math.max(M[k - 1][c], V[k - 1] + M[k - 1][c - T[k - 1]]);
+            }
+        }
         return M;
     }
 

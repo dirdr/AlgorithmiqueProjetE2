@@ -82,6 +82,14 @@ public class Util {
         return returnable;
     }
 
+    /**
+     * create and return a random matrix
+     * @param r the number of lines
+     * @param c the number of columns
+     * @param lb low bound for the number generation
+     * @param hb high bound for the number generation
+     * @return the generated matrix with specified parameters
+     */
     public static int[][] randomMatrix(int r, int c, int lb, int hb) {
         int[][] returnable = new int[r][c];
         for (int i = 0; i < r; i++) {
@@ -109,6 +117,12 @@ public class Util {
         return returnable;
     }
 
+    /**
+     * create and return a mark distribution (0 -> 20)
+     * @param n the number of unit
+     * @param H the number of work hours
+     * @return the generated distribution
+     */
     public static int[][] randomMarkDistribution(int n, int H) {
         int[][] returnable = new int[n][H+1];
         for (int i = 0; i < n; i++) {

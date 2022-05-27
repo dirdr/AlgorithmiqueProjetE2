@@ -13,17 +13,18 @@ public class Warehouses {
         ArrayList<Float> collector = new ArrayList<>();
         for (int i = 1; i <= number_of_run; i++) {
             collector.add(calculateDistance());
+            Util.printProgress(number_of_run, i);
         }
         Util.WriteTabToFile(collector, "Entrepots.csv");
     }
 
     public static float calculateDistance() {
-        int n = Util.randomNum(1000, 2000);
-        int S = Util.randomNum(n, n + Util.randomNum(1, 1000));
+        int n = Util.randomNum(1, 500);
+        int S = Util.randomNum(250, 700);
         int[][] G = Util.randomWarehouse(
                 n,
                 S,
-                5000
+                2*n
         );
         int dp_gain = calculateM(G)[G.length][G[0].length - 1];
         int greedy_gain = calculateGreedy(G);

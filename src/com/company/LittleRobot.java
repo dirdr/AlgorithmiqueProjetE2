@@ -54,13 +54,19 @@ public class LittleRobot {
         return M;
     }
 
+    /**
+     * Greedy method to calculate the cost from (0,0) to (L-1, C-1)
+     * @param L number of line
+     * @param C number of column
+     * @param direction_cost a 3d array containing all the randomly generated cos matrix
+     * @return the calculated cost
+     */
     public static int calculateGreedy(int L, int C, int[][][] direction_cost) {
         HashMap<String, Integer> map = new HashMap<>();
         int l = 0;
         int c = 0;
         int cost = 0;
         while (l != L - 1 || c != C - 1) {
-            map.clear();
             map.put("10", n(l, c, L, direction_cost[0]));
             map.put("11", ne(l, c, L, C, direction_cost[1]));
             map.put("01", e(l, c, L, C, direction_cost[2]));
@@ -74,21 +80,50 @@ public class LittleRobot {
         return cost;
     }
 
+    /*
+        calculate and return the minimum between three integer
+     */
     public static int min(int x, int y, int z){
         if (x <= y && x <= z) return x;
         return Math.min(y, z);
     }
 
+    /**
+     * return the cost to go north from a specific location
+     * @param l the current line
+     * @param c the current column
+     * @param L the number of line in the map
+     * @param n_cost a precalculated cost tab
+     * @return the cost
+     */
     public static int n(int l, int c, int L, int[][] n_cost){
         if (l == L-1) return Integer.MAX_VALUE;
         return n_cost[l][c];
     }
 
+    /**
+     * return the cost to go north est from a specific location
+     * @param l the current line
+     * @param c the current column
+     * @param L the number of line in the map
+     * @param C the number of column in the map
+     * @param ne_cost a precalculated cost tab
+     * @return the cost
+     */
     public static int ne(int l, int c, int L, int C, int[][] ne_cost){
         if (l == L-1 || c == C-1) return Integer.MAX_VALUE;
         return ne_cost[l][c];
     }
 
+    /**
+     * return the cost to go est from a specific location
+     * @param l the current line
+     * @param c the current column
+     * @param L the number of line in the map
+     * @param C the number of column in the map
+     * @param e_cost a precalculated cost tab
+     * @return the cost
+     */
     public static int e(int l, int c, int L, int C, int[][] e_cost){
         if (c == C-1) return Integer.MAX_VALUE;
         return e_cost[l][c];
