@@ -7,17 +7,26 @@ class MaximumValueBag {
         runsThenWrite(5000);
     }
 
-    public static void runsThenWrite(int number_of_run) {
+    /**
+     * call an Util function to write all the data that has been calculated
+     * @param number_of_runs to perform
+     */
+    public static void runsThenWrite(int number_of_runs) {
+
+        // first comparison, with the greedy by value approach
         ArrayList<Float> collector = new ArrayList<>();
-        for (int i = 1; i <= number_of_run; i++) {
-            collector.add(calculateDistance(false));
-            Util.printProgress(number_of_run, i);
-        }
-        Util.WriteTabToFile(collector, "SacValMaxByValue.csv");
-        collector.clear();
-        for (int i = 1; i <= number_of_run; i++) {
+        //for (int i = 1; i <= number_of_runs; i++) {
+        //    collector.add(calculateDistance(false));
+        //    Util.printProgress(number_of_runs, i);
+        //}
+        //Util.WriteTabToFile(collector, "SacValMaxByValue.csv");
+
+        //collector.clear(); //clear the arraylist storing result
+
+        // second comparison, this time with the greedy by density approach
+        for (int i = 1; i <= number_of_runs; i++) {
             collector.add(calculateDistance(true));
-            Util.printProgress(number_of_run, i);
+            Util.printProgress(number_of_runs, i);
         }
         Util.WriteTabToFile(collector, "SacValMaxByDensity.csv");
     }
@@ -31,38 +40,16 @@ class MaximumValueBag {
      * where v* is the optimal value, and g is the greedy value
      */
     public static float calculateDistance(boolean by_density) {
-        int C = Util.randomNum(1, 10000);
+        int C = Util.randomNum(1, 5000);
         int n = Util.randomNum(1, 5000);
         int[] V  = Util.randomTab(n, 1, 500);
-        int[] T = Util.randomTab(n, 1, 100);
+        int[] T = Util.randomTab(n, 1, 300);
         int[][] opti = calculateM(V, T, C);
         int[] glouton = calculateGreedy(V, T, C, by_density);
         int val_opti = opti[n][C];
         int val_glouton = glouton[1];
+        asm(opti, V, T, n, C);
         return (float) (val_opti-val_glouton)/val_opti;
-    }
-
-    /**
-     * print in a proper way the M tab
-     * @param M the pre-calculated M tab
-     */
-    public static void print(int[][] M){
-        int n = M.length;
-        System.out.println("\t[");
-        for (int i = n-1; i>=0; i--)
-            System.out.println("\t\t" + Arrays.toString(M[i]));
-        System.out.println("\t]");
-    }
-
-    /**
-     * Calculate the sum of all element in T
-     * @param T the tab in which the sum is to be calculated
-     * @return the sum of all element in T
-     */
-     public static int sum(int[] T){
-        int s = 0;
-        for (int j : T) s = s + j;
-        return s;
     }
 
     /**
@@ -130,15 +117,14 @@ class MaximumValueBag {
      * @param k the number of object considered
      * @param c the current bag capacity
      */
-    public static void asm(int[][] M, int[] V, int[] T, int k, int c){
+    public static void asm(int[][] M, int[] V, int[] T, int k, int c) {
         if (k == 0)
             return;
         if (M[k][c] == M[k-1][c])
             asm(M, V, T, k-1, c) ;
         else {
             asm(M,V,T,k-1,c-T[k-1]);
-            System.out.printf("objet, valeur, taille = %d, %d, %d\n",
-                    k-1, V[k-1], T[k-1]);
+            System.out.printf("object : %d, value : %d, size : %d \n", k-1, V[k-1], T[k-1]);
         }
     }
 

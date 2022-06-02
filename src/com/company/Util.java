@@ -9,8 +9,10 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Util {
+
     /**
      * Create a csv file and write to it all the distances values
+     * Use of the library csv writer,
      * @param result a float ArrayList containing all the calculated distances
      * @param file_path a String representing the name of the csv file
      */
@@ -107,12 +109,14 @@ public class Util {
      * @param hb high bound
      * @return the randomly generate matrix with specified parameter
      */
-    public static int[][] randomWarehouse(int r, int c, int hb) {
+    public static int[][] randomWarehouse(int r, int c, int lb, int hb) {
         int[][] returnable = new int[r][c+1];
         for (int i = 0; i < r; i++) {
+            returnable[i][0] = 0;
             for (int j = 1; j < c+1; j++) {
-                returnable[i][j] = randomNum(returnable[i][j-1] == 0 ? 1: returnable[i][j-1], hb);
+                returnable[i][j] = Util.randomNum(lb, hb);
             }
+            Arrays.sort(returnable[i]);
         }
         return returnable;
     }
@@ -126,9 +130,11 @@ public class Util {
     public static int[][] randomMarkDistribution(int n, int H) {
         int[][] returnable = new int[n][H+1];
         for (int i = 0; i < n; i++) {
+            returnable[i][0] = 0;
             for (int j = 0; j < H+1; j++) {
-                returnable[i][j] = randomNum(j == 0 ? 0: returnable[i][j-1], 20);
+                returnable[i][j] = Util.randomNum(1, 20);
             }
+            Arrays.sort(returnable[i]);
         }
         return returnable;
     }
